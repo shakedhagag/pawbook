@@ -4,13 +4,14 @@ import React, { useState } from "react";
 import Image from "next/image";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { selectAuthState } from "@/store/slicers/authSlice";
+import { selectAuthInfo } from "@/store/slicers/authSlice";
 import { logIn } from "@/store/slicers/authSlice";
 
 export default function Page() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const auth = useSelector(selectAuthState);
+  const info = useSelector(selectAuthInfo);
+
   const dispatch = useDispatch();
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -19,10 +20,9 @@ export default function Page() {
         email: email,
         password: password,
       });
-
-      console.log("Login successful:", response.data);
       if (response.data.token) {
-        localStorage.setItem("USER_TOKEN", response.data.token);
+        const bearerToken = `Bearer ${response.data.token}`;
+        localStorage.setItem("USER_TOKEN", bearerToken);
       }
       dispatch(logIn(response.data));
     } catch (error) {

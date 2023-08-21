@@ -1,32 +1,26 @@
 "use client";
 import { useEffect } from "react";
 import Header from "../components/Header";
-import { rehydrateAuth, selectAuthState } from "@/store/slicers/authSlice";
+import { selectAuthState } from "@/store/slicers/authSlice";
 import { useDispatch } from "@/store/hooks";
 import AuthBarrier from "../components/AuthBarrier";
 import { useSelector } from "react-redux";
+import Sidebar from "@/components/Sidebar";
+import Feed from "@/components/Feed";
+import Widgets from "@/components/Widgets";
 
 export default function Home() {
-  const dispatch = useDispatch();
-  const isAuthenticated = useSelector(selectAuthState);
-  console.log(
-    "🚀 ~ file: page.tsx:12 ~ Home ~ isAuthenticated:",
-    isAuthenticated
-  );
-
-  useEffect(() => {
-    dispatch(rehydrateAuth());
-  }, [dispatch]);
   return (
-    <AuthBarrier>
-      <div>
-        <Header />
-        <main>
-          {/* SIDEBAR */}
-          {/* FEED */}
-          {/* WIDGETS */}
-        </main>
-      </div>
-    </AuthBarrier>
+    <div>
+      <Header />
+      <main>
+        <div className="flex bg-gray-100 overflow-hidden">
+          <Sidebar />
+          <Feed />
+          <Widgets />
+        </div>
+        {/* WIDGETS */}
+      </main>
+    </div>
   );
 }

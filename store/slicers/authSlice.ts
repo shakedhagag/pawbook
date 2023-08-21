@@ -12,20 +12,43 @@ export interface AuthState {
   value: {
     authState: boolean;
     username: string;
+    email: string;
     token: string;
-    // uid: string;
-    // isAdmin: boolean;
+    ownerImg: string;
+    dogImg: string;
+    isAdmin?: boolean;
+    id?: string;
   };
 }
+
+export type AuthPayload = {
+  token: string;
+  user: {
+    email: string;
+    name: string;
+    owner_img: string;
+    dog_img: string;
+  };
+};
+
+export type currentUserPayload = {
+  email: string;
+  name: string;
+  owner_img: string;
+  dog_img: string;
+  password?: string;
+  id?: string;
+};
 
 // Initial state
 const initialState: AuthState = {
   value: {
     authState: false,
     username: "",
+    email: "",
     token: "",
-    // uid: "",
-    // isAdmin: false,
+    ownerImg: "",
+    dogImg: "",
   },
 };
 
@@ -35,34 +58,45 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     logOut: () => initialState,
-    logIn: (
-      state,
-      action: PayloadAction<{ username: string; token: string }>
-    ) => ({
+    logIn: (state, action: PayloadAction<AuthPayload>) => ({
       ...state,
       value: {
         ...state.value,
         authState: true,
-        username: action.payload.username,
+        username: action.payload.user.name,
+        email: action.payload.user.email,
+        ownerImg: action.payload.user.owner_img,
+        dogImg: action.payload.user.dog_img,
         token: action.payload.token,
-        // uid: action.payload.uid, // Add to backend response
-        // isAdmin: action.payload.isAdmin, // Add to backend response
+      },
+    }),
+    setAuthState: (state, action: PayloadAction<boolean>) => ({
+      ...state,
+      value: {
+        ...state.value,
+        authState: action.payload,
+      },
+    }),
+    setCurrentUser: (state, action: PayloadAction<currentUserPayload>) => ({
+      ...state,
+      value: {
+        ...state.value,
+        username: action.payload.name,
+        email: action.payload.email,
+        ownerImg: action.payload.owner_img,
+        dogImg: action.payload.dog_img,
+        id: action.payload.id,
       },
     }),
   },
 });
 
-export const rehydrateAuth =
-  (): ThunkAction<void, RootState, unknown, Action<string>> => (dispatch) => {
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      dispatch(logIn({ username: "", token: token }));
-    }
-  };
+export const { logIn, logOut, setAuthState, setCurrentUser } =
+  authSlice.actions;
 
-export const { logIn, logOut } = authSlice.actions;
-
+export const selectAuthInfo = (state: RootState) => state.auth.value;
 export const selectAuthState = (state: RootState) => state.auth.value.authState;
+export const selectUsername = (state: RootState) => state.auth.value.username;
 export const selectToken = (state: RootState) => state.auth.value.token;
 
 export default authSlice.reducer;
