@@ -1,7 +1,7 @@
 "use client";
 import React, { ReactNode, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import {
   setAuthState,
   selectAuthState,
@@ -19,6 +19,7 @@ type AuthBarrierProps = {
 
 const AuthBarrier: React.FC<AuthBarrierProps> = ({ children }) => {
   const router = useRouter();
+  let path: string = usePathname();
   const dispatch = useDispatch();
   let isAuthenticated: boolean = useSelector(selectAuthState);
   let currentUser: any = useRef(null);
@@ -27,11 +28,11 @@ const AuthBarrier: React.FC<AuthBarrierProps> = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem("USER_TOKEN");
     if (token) {
-      verifyToken(token, router, dispatch);
+      verifyToken(token, router, dispatch, path);
     } else {
-      router.push("/login");
+      router.push("/authenticate/login");
     }
-  }, [dispatch, isAuthenticated, router]);
+  }, [dispatch, isAuthenticated, path, router]);
 
   return <>{children}</>;
 };
@@ -39,7 +40,8 @@ const AuthBarrier: React.FC<AuthBarrierProps> = ({ children }) => {
 const verifyToken = async (
   token: string | null,
   router: AppRouterInstance,
-  dispatch: Dispatch<AnyAction>
+  dispatch: Dispatch<AnyAction>,
+  path: string
 ) => {
   try {
     const response = await axios.get("http://localhost:3030/verify-token", {
@@ -55,10 +57,12 @@ const verifyToken = async (
       dispatch(setCurrentUser(currentUser));
       dispatch(setAuthState(true));
     }
-    router ? router.push("/") : null;
+    const isOnLoginPage = path === "/authenticate/login";
+    isOnLoginPage ? (path = "/") : null;
+    router ? router.push(path) : null;
     return currentUser;
   } catch (error) {
-    router.push("/login");
+    router.push("/authenticate/login");
   }
 };
 

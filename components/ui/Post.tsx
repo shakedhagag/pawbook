@@ -8,9 +8,10 @@ import {
 import axios from "axios";
 import { HandThumbUpIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { AppDispatch } from "@/store/store";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchPosts } from "@/store/slicers/postsSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { selectAuthInfo } from "@/store/slicers/authSlice";
 
 export type PostProps = {
   name: string;
@@ -31,6 +32,10 @@ const Post: React.FC<PostProps> = ({
   isCurrentUser,
   id,
 }) => {
+  const currentUser = useSelector(selectAuthInfo);
+  const currUserEmail = currentUser.email;
+  const currentUserImg = currentUser.dogImg;
+
   const date = new Date(timestamp);
   const formattedDate = date.toDateString();
   const dispatch: AppDispatch = useDispatch();
@@ -57,7 +62,13 @@ const Post: React.FC<PostProps> = ({
         <div className="flex items-center space-x-2">
           {/*eslint-disable-next-line @next/next/no-img-element*/}
           <Avatar>
-            <AvatarImage src={image} />
+            <AvatarImage
+              src={
+                image
+                  ? image
+                  : "https://www.pngitem.com/pimgs/m/581-5813504_avatar-dummy-png-transparent-png.png"
+              }
+            />
             <AvatarFallback>Avatar</AvatarFallback>
           </Avatar>
 

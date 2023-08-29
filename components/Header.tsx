@@ -15,21 +15,24 @@ import Icon from "./ui/Icon";
 import { useSelector } from "react-redux";
 import { selectUsername } from "@/store/slicers/authSlice";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 const Header = () => {
   const userName = useSelector(selectUsername);
   const path = usePathname();
-  console.log(path);
+  console.log("🚀 ~ file: Header.tsx:23 ~ Header ~ path:", path);
   return (
     <div className="sticky top-0 z-50 bg-white flex items-center p-2 lg:px-5 shadow-md">
       <div className="flex items-center">
-        <Image
-          src="/logo.png"
-          width={38}
-          height={38}
-          alt="PawBook Logo"
-          priority={true}
-        />
+        <Link href="/">
+          <Image
+            src="/logo.png"
+            width={38}
+            height={38}
+            alt="PawBook Logo"
+            priority={true}
+          />
+        </Link>
         <div className="flex ml-2 items-center rounded-full bg-gray-100 p-2">
           <MagnifyingGlassIcon className="h-6 text-gray-600 " />
           <input
@@ -41,7 +44,9 @@ const Header = () => {
       </div>
       <div className="flex justify-center flex-grow">
         <div className="flex space-x-6 md:space-x-2">
-          <Icon active={path == "/"} Icon={HomeIcon} />
+          <Link href="/">
+            <Icon active={path === "/"} Icon={HomeIcon} />
+          </Link>
           <Icon Icon={PlayIcon} />
           <Icon Icon={ShoppingCartIcon} />
           <Icon Icon={UserGroupIcon} />

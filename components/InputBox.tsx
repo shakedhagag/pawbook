@@ -47,7 +47,6 @@ const InputBox = () => {
     }
   };
   const setImg = () => {
-    console.log(imgRef.current?.innerText);
     if (imgRef.current) {
       setImgToPost(imgRef.current.innerText);
     }
@@ -126,7 +125,6 @@ const InputBox = () => {
                 ref={imgRef}
                 value={imgToPost}
                 onChange={(e) => {
-                  console.log(e.target.value);
                   setImgToPost(e.target.value);
                 }}
               />
