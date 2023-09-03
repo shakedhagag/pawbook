@@ -3,23 +3,17 @@ import React from "react";
 import Stories from "./Stories";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { unfollowFriend } from "@/store/slicers/friendsSlice";
-import { useDispatch, useSelector } from "react-redux";
-
+import { useSelector } from "react-redux";
 import { FriendProps } from "@/store/slicers/friendsSlice";
-import { AppDispatch } from "@/store/store";
 import { selectAuthInfo } from "@/store/slicers/authSlice";
+import { UnfollowAlert } from "./UnfollowAlert";
 interface FriendsProps {
   friendsList: FriendProps[];
 }
 
 const Friends: React.FC<FriendsProps> = ({ friendsList }) => {
-  const dispatch: AppDispatch = useDispatch();
   const currentUser = useSelector(selectAuthInfo);
-  console.log("🚀 ~ file: Friends.tsx:20 ~ currentUser:", currentUser);
   const id = currentUser.id;
-  console.log("🚀 ~ file: Friends.tsx:22 ~ id:", id);
   return (
     <div className="flex-grow h-screen pb-44 pt-6 mr-4 xl:mr-40 overflow-y-auto no-scrollbar">
       <div className="mx-auto max-w-md md:max-w-lg">
@@ -42,13 +36,8 @@ const Friends: React.FC<FriendsProps> = ({ friendsList }) => {
                     </Avatar>
                     <CardTitle>{friend.name}</CardTitle>
                   </div>
-                  <div className="float-right ml-auto">
-                    <Button
-                      variant="outline"
-                      onClick={() => dispatch(unfollowFriend(friend, id))}
-                    >
-                      Unfollow
-                    </Button>
+                  <div className="flex float-right ml-auto">
+                    <UnfollowAlert friend={friend} id={id} />
                   </div>
                 </div>
               </CardHeader>

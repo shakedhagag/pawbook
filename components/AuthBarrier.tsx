@@ -51,6 +51,7 @@ const verifyToken = async (
       },
     });
     let currentUser = response.data.user;
+
     const currentUserId = response.data.id;
     currentUser["id"] = currentUserId;
     if (currentUser) {

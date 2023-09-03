@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   VideoCameraIcon,
   MagnifyingGlassCircleIcon,
   MegaphoneIcon,
 } from "@heroicons/react/20/solid";
 import Contact from "./Contact";
+import { selectFriends } from "@/store/slicers/friendsSlice";
+import { useSelector } from "react-redux";
 
 const contacts = [
   { src: "https://links.papareact.com/kxk", name: "Elon Musk" },
@@ -16,6 +18,7 @@ const contacts = [
 ];
 
 const Widgets = () => {
+  const currUserFriends = useSelector(selectFriends);
   return (
     <div className="hidden lg:flex flex-col w-60 p-2 mt-5">
       <div className="flex jusify-between items-center text-gray-500 space-x-5">
@@ -26,8 +29,12 @@ const Widgets = () => {
           <MegaphoneIcon className="h-6 text-blue-500" />
         </div>
       </div>
-      {contacts.map((contact) => (
-        <Contact key={contact.src} src={contact.src} name={contact.name} />
+      {currUserFriends.map((contact) => (
+        <Contact
+          key={contact.friendId}
+          src={contact.dog_img}
+          name={contact.name}
+        />
       ))}
     </div>
   );

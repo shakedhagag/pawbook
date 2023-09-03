@@ -7,8 +7,6 @@ import {
 } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { selectAuthInfo } from "./authSlice";
 
 export type FriendProps = {
   friendId: string;

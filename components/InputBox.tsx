@@ -12,6 +12,17 @@ import { AppDispatch } from "@/store/store";
 import { fetchPosts } from "@/store/slicers/postsSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 import axios from "axios";
 import {
@@ -26,10 +37,37 @@ const Feelings = {
   sad: <FaceFrownIcon className="h-7 text-red-500" />,
 };
 
+const longPostAlert = (
+  open: boolean,
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  return (
+    <AlertDialog open={open}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Oops! You post is too long...</AlertDialogTitle>
+        </AlertDialogHeader>
+        <AlertDialogDescription>
+          Your post is too long. Please shorten it to 300 characters or less.
+        </AlertDialogDescription>
+        <AlertDialogFooter>
+          <AlertDialogAction
+            onClick={() => setOpen(false)}
+            className="bg-blue-400"
+          >
+            Ok
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};
+
 const InputBox = () => {
   const dispatch: AppDispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLInputElement>(null);
+  const [open, setOpen] = useState(false);
   const [feeling, setFeeling] = useState<ReactElement | null>(null);
   const [imgToPost, setImgToPost] = useState<string | undefined>("");
   const currentUser = useSelector(selectAuthInfo);
@@ -57,7 +95,12 @@ const InputBox = () => {
     e.preventDefault();
     if (inputRef.current) {
       if (!inputRef.current.value) return;
+      if (inputRef.current.value.length > 300) {
+        setOpen(true);
+        return;
+      }
     }
+
     const post = {
       text: inputRef?.current?.value,
       image: imgToPost,
@@ -79,6 +122,7 @@ const InputBox = () => {
   return (
     <div className="bg-white p-2 rounded-2xl shadow-md text-gray-500 font-medium mt-6 ">
       <div className="flex space-x-4 p-4 items-center">
+        {longPostAlert(open, setOpen)}
         <Avatar>
           <AvatarImage
             src={
@@ -89,7 +133,6 @@ const InputBox = () => {
           />
           <AvatarFallback>Avatar</AvatarFallback>
         </Avatar>
-
         <form action="" className="flex flex-1">
           <input
             type="text"

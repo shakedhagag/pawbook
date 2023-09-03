@@ -3,12 +3,16 @@ import { authSlice } from "./slicers/authSlice";
 import thunk, { ThunkDispatch } from "redux-thunk";
 import { postsSlice } from "./slicers/postsSlice";
 import { friendsSlice } from "./slicers/friendsSlice";
+import { userProfileSlice } from "./slicers/userProfileSlice";
+import { adminSlice } from "./slicers/adminSlice";
 
 export const store = configureStore({
   reducer: {
     [authSlice.name]: authSlice.reducer,
     [postsSlice.name]: postsSlice.reducer,
     [friendsSlice.name]: friendsSlice.reducer,
+    [userProfileSlice.name]: userProfileSlice.reducer,
+    [adminSlice.name]: adminSlice.reducer,
   },
   middleware: [thunk],
   devTools: true,

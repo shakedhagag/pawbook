@@ -13,8 +13,9 @@ const Contact: React.FC<ContactProps> = ({ src, name }) => {
         src={src}
         width={40}
         height={40}
-        className="rounded-full object-cover cursor-pointer hover:opacity-80 transition duration-150 ease-in-out transform hover:scale-110 hover:rotate-12 w-auto h-auto"
+        className="rounded-full object-cover cursor-pointer hover:opacity-80 transition duration-150 ease-in-out transform hover:scale-110 hover:rotate-12 w-10 h-10"
         alt="user-image"
+        style={{ objectFit: "cover" }}
       />
       <p>{name}</p>
       <div className="absolute bottom-2 left-7 bg-green-400 h-3 w-3 rounded-full" />

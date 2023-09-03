@@ -9,12 +9,19 @@ const nextConfig = {
       "plus.unsplash.com",
       "links.papareact.com",
       "www.pngitem.com",
+      "http://localhost",
+      "localhost:3030",
     ],
     remotePatterns: [
       {
         protocol: "https",
         hostname: "seeklogo.com",
         port: "",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "3030",
       },
       {
         protocol: "https",

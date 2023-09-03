@@ -28,6 +28,7 @@ export type AuthPayload = {
     name: string;
     owner_img: string;
     dog_img: string;
+    isAdmin?: boolean;
   };
 };
 
@@ -38,6 +39,7 @@ export type currentUserPayload = {
   dog_img: string;
   password?: string;
   id?: string;
+  isAdmin?: boolean;
 };
 
 // Initial state
@@ -49,6 +51,7 @@ const initialState: AuthState = {
     token: "",
     ownerImg: "",
     dogImg: "",
+    isAdmin: false,
   },
 };
 
@@ -68,6 +71,7 @@ export const authSlice = createSlice({
         ownerImg: action.payload.user.owner_img,
         dogImg: action.payload.user.dog_img,
         token: action.payload.token,
+        isAdmin: action.payload.user.isAdmin,
       },
     }),
     setAuthState: (state, action: PayloadAction<boolean>) => ({
@@ -86,6 +90,7 @@ export const authSlice = createSlice({
         ownerImg: action.payload.owner_img,
         dogImg: action.payload.dog_img,
         id: action.payload.id,
+        isAdmin: action.payload.isAdmin,
       },
     }),
   },
