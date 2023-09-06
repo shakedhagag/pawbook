@@ -52,13 +52,19 @@ export const friendsSlice = createSlice({
 export const { initFriends, addFriend } = friendsSlice.actions;
 
 export const fetchFriends =
-  (id: string): ThunkAction<void, RootState, unknown, Action<string>> =>
+  (
+    id: string | undefined
+  ): ThunkAction<void, RootState, unknown, Action<string>> =>
   async (dispatch) => {
-    const response = await axios.get<FriendProps[]>(
-      "http://localhost:3030/friends",
-      { headers: { id: id } }
-    );
-    dispatch(initFriends(response.data));
+    try {
+      const response = await axios.get<FriendProps[]>(
+        "http://localhost:3030/friends",
+        { headers: { id: id } }
+      );
+      dispatch(initFriends(response.data));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
 export const unfollowFriend =

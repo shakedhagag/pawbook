@@ -10,7 +10,7 @@ import axios from "axios";
 
 export type AdminProps = {
   friends: boolean;
-  users: boolean;
+  editProfile: boolean;
   posts: boolean;
   // comments: boolean;
   // likes: boolean;
@@ -29,7 +29,7 @@ const initialState: AdminState = {
   value: {
     admin: {
       friends: true,
-      users: true,
+      editProfile: true,
       posts: true,
       // comments: true,
       // likes: true,
@@ -68,8 +68,11 @@ export const fetchAdminState =
   (): ThunkAction<void, RootState, unknown, Action<string>> =>
   async (dispatch: (arg0: AnyAction) => void) => {
     try {
-      const { data } = await axios.get("/api/admin");
-      dispatch(enablePage(data));
+      const { data } = await axios.get("http://localhost:3030/admin/pages", {
+        withCredentials: true,
+      });
+      console.log(data);
+      dispatch(enablePage(data.pages));
     } catch (error) {
       console.log(error);
     }

@@ -1,11 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import Post from "./ui/Post";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPosts, selectPosts } from "@/store/slicers/postsSlice";
 import { AppDispatch } from "@/store/store";
 import { selectAuthInfo } from "@/store/slicers/authSlice";
+import { fetchAdminState, selectAdminState } from "../store/slicers/adminSlice";
 
 type UsersType = {
   [key: string]: UserType;
@@ -23,7 +24,9 @@ const Posts = () => {
   const dispatch: AppDispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchPosts());
+    dispatch(fetchAdminState());
   }, [dispatch]);
+  const adminState = useSelector(selectAdminState);
   const postsState = useSelector(selectPosts);
   const [users, setUsers] = useState({} as UsersType);
   const currentUser = useSelector(selectAuthInfo);
@@ -48,6 +51,13 @@ const Posts = () => {
     owner_img: "",
     password: "",
   };
+  if (!adminState.posts) {
+    return (
+      <div className="flex flex-grow h-screen pb-44 pt-6 xl:mr-40 mx-auto max-w-md md:max-w-lg justify-center">
+        Sorry Posts aren't available right now...
+      </div>
+    );
+  }
   return (
     <div>
       {Object.entries(postsState.posts).map(([id, post]) => {

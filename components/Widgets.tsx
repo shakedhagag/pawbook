@@ -5,20 +5,31 @@ import {
   MegaphoneIcon,
 } from "@heroicons/react/20/solid";
 import Contact from "./Contact";
-import { selectFriends } from "@/store/slicers/friendsSlice";
-import { useSelector } from "react-redux";
-
-const contacts = [
-  { src: "https://links.papareact.com/kxk", name: "Elon Musk" },
-  { src: "https://links.papareact.com/zvy", name: "Bill Gates" },
-  { src: "https://links.papareact.com/snf", name: "Mark Zuckerberg" },
-  { src: "https://links.papareact.com/d0c", name: "Harry Potter" },
-  { src: "https://links.papareact.com/6gg", name: "The Queen" },
-  { src: "https://links.papareact.com/r57", name: "James Bond" },
-];
+import { fetchFriends, selectFriends } from "@/store/slicers/friendsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "@/store/store";
+import { selectAuthInfo } from "@/store/slicers/authSlice";
 
 const Widgets = () => {
+  const currentUserId = useSelector(selectAuthInfo).id;
+
+  const dispatch: AppDispatch = useDispatch();
+  useEffect(() => {
+    if (currentUserId) {
+      dispatch(fetchFriends(currentUserId));
+    }
+  }, [dispatch, currentUserId]);
   const currUserFriends = useSelector(selectFriends);
+  const renderUserFriends = () => {
+    if (!currUserFriends) return;
+    return currUserFriends.map((contact) => (
+      <Contact
+        key={contact.friendId}
+        src={contact.dog_img}
+        name={contact.name}
+      />
+    ));
+  };
   return (
     <div className="hidden lg:flex flex-col w-60 p-2 mt-5">
       <div className="flex jusify-between items-center text-gray-500 space-x-5">
@@ -28,14 +39,8 @@ const Widgets = () => {
           <MagnifyingGlassCircleIcon className="h-6 text-green-500" />
           <MegaphoneIcon className="h-6 text-blue-500" />
         </div>
+        {renderUserFriends()}
       </div>
-      {currUserFriends.map((contact) => (
-        <Contact
-          key={contact.friendId}
-          src={contact.dog_img}
-          name={contact.name}
-        />
-      ))}
     </div>
   );
 };

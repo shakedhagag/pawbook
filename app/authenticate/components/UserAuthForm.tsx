@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
@@ -8,8 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { logIn } from "@/store/slicers/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { logIn, selectAuthInfo } from "@/store/slicers/authSlice";
+import { usePathname } from "next/navigation";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   type: string;
@@ -21,18 +22,48 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
   const [password, setPassword] = useState<string>("");
   const [name, setName] = useState<string>("");
   const dispatch = useDispatch();
+  const authState = useSelector(selectAuthInfo).authState;
+  const path = usePathname();
+
+  useEffect(() => {
+    if (
+      authState &&
+      path === "/authenticate/login" &&
+      localStorage.getItem("USER_TOKEN") &&
+      type === "login"
+    ) {
+      window.location.href = "/";
+    }
+  }, [authState, path, type]);
+
+  useEffect(() => {
+    if (
+      authState &&
+      path === "/authenticate/register" &&
+      localStorage.getItem("USER_TOKEN") &&
+      type === "signup"
+    ) {
+      window.location.href = "/";
+    }
+  }, [authState, path, type]);
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axios.post(`http://localhost:3030/${type}`, {
-        email: email,
-        password: password,
-        name: name,
-      });
+      const response = await axios.post(
+        `http://localhost:3030/${type}`,
+        {
+          email: email,
+          password: password,
+          name: name,
+        },
+        {
+          withCredentials: true,
+        }
+      );
       if (response.data.token) {
-        const bearerToken = `Bearer ${response.data.token}`;
-        localStorage.setItem("USER_TOKEN", bearerToken);
+        const token = response.data.token;
+        localStorage.setItem("USER_TOKEN", token);
       }
       setTimeout(() => {
         setIsLoading(false);

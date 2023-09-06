@@ -51,8 +51,6 @@ export const SearchBar = () => {
         { friendId: id },
         { headers: { id: currentUserId } }
       );
-
-      console.log(response);
     } catch (error) {
       console.log(error);
     }

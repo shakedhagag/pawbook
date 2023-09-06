@@ -8,16 +8,16 @@ import { SidebarNav } from "./[adminNavbar]";
 
 const sidebarNavItems = [
   {
+    title: "Pages",
+    href: "/authenticate/admin-panel/",
+  },
+  {
     title: "Users",
     href: "/authenticate/admin-panel/users",
   },
   {
-    title: "Account",
-    href: "/examples/forms/account",
-  },
-  {
-    title: "Appearance",
-    href: "/examples/forms/appearance",
+    title: "Login Activity",
+    href: "/authenticate/admin-panel/users/login-activity",
   },
   {
     title: "Notifications",

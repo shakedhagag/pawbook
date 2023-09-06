@@ -33,6 +33,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import axios from "axios";
+import {
+  fetchAdminState,
+  selectAdminState,
+} from "../../store/slicers/adminSlice";
+import Link from "next/link";
 
 const Profile: React.FC<FriendsProps> = ({ friendsList }) => {
   const currentUser = useSelector(selectAuthInfo);
@@ -41,7 +46,6 @@ const Profile: React.FC<FriendsProps> = ({ friendsList }) => {
   const ownerImg = currentUser.ownerImg;
   const name = currentUser.username;
   const isAdmin = currentUser.isAdmin;
-  console.log("🚀 ~ file: [profile].tsx:44 ~ isAdmin:", isAdmin);
   const dispatch: AppDispatch = useDispatch();
   const currProfile = useSelector(selectUserProfile);
   const [edit, setEdit] = useState(false);
@@ -52,6 +56,11 @@ const Profile: React.FC<FriendsProps> = ({ friendsList }) => {
   );
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    dispatch(fetchAdminState());
+  }, [dispatch]);
+  const adminState = useSelector(selectAdminState);
 
   useEffect(() => {
     if (!id) return;
@@ -85,7 +94,6 @@ const Profile: React.FC<FriendsProps> = ({ friendsList }) => {
           },
         }
       );
-      console.log(response.data);
     } catch (error) {
       console.error("Error uploading image:", error);
     }
@@ -106,6 +114,32 @@ const Profile: React.FC<FriendsProps> = ({ friendsList }) => {
       dispatch(fetchUserProfile(id));
     }
   };
+
+  const handleLogOut = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3030/logout",
+        { id: id },
+        {
+          withCredentials: true,
+        }
+      );
+      localStorage.removeItem("USER_TOKEN");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const usersDescription =
+    currProfile.userProfile?.description || "Tell us about your dog!";
+
+  if (!adminState.editProfile) {
+    return (
+      <div className="flex flex-grow h-screen pb-44 pt-6 xl:mr-40 mx-auto max-w-md md:max-w-lg justify-center items-center">
+        Sorry Profile isn't available right now...
+      </div>
+    );
+  }
 
   return (
     <div className="flex-grow h-screen pb-44 pt-6 mr-4 xl:mr-40 overflow-y-auto no-scrollbar">
@@ -172,7 +206,7 @@ const Profile: React.FC<FriendsProps> = ({ friendsList }) => {
 
                   {!editTitle && (
                     <div className="flex gap-1 items-center text-gray-500">
-                      {currProfile.userProfile.title}
+                      {currProfile.userProfile.title ?? "Add a title!"}
                       <PencilIcon
                         size={10}
                         className="cursor-pointer"
@@ -185,7 +219,7 @@ const Profile: React.FC<FriendsProps> = ({ friendsList }) => {
             </CardHeader>
             <CardContent>
               {!edit ? (
-                `${currProfile.userProfile.description}`
+                `${usersDescription}`
               ) : (
                 <form className="flex flex-1" onSubmit={handleSubmit}>
                   <textarea
@@ -213,6 +247,16 @@ const Profile: React.FC<FriendsProps> = ({ friendsList }) => {
               </div>
             </CardFooter>
           </Card>
+          {isAdmin && (
+            <div className="flex flex-col items-center justify-center p-2 space-y-2">
+              <Link href="/authenticate/admin-panel">
+                <Button>Admin Panel</Button>
+              </Link>
+              <Link href="/authenticate/login">
+                <Button onClick={handleLogOut}>Log Out</Button>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </div>

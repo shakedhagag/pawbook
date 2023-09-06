@@ -1,11 +1,10 @@
 "use client";
-import React, { ReactNode, useEffect, useRef } from "react";
+import React, { ReactNode, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter, usePathname } from "next/navigation";
 import {
   setAuthState,
   selectAuthState,
-  logIn,
   setCurrentUser,
   selectAuthInfo,
 } from "@/store/slicers/authSlice";
@@ -22,7 +21,6 @@ const AuthBarrier: React.FC<AuthBarrierProps> = ({ children }) => {
   let path: string = usePathname();
   const dispatch = useDispatch();
   let isAuthenticated: boolean = useSelector(selectAuthState);
-  let currentUser: any = useRef(null);
   const info = useSelector(selectAuthInfo);
 
   useEffect(() => {
@@ -30,7 +28,7 @@ const AuthBarrier: React.FC<AuthBarrierProps> = ({ children }) => {
     if (token) {
       verifyToken(token, router, dispatch, path);
     } else {
-      router.push("/authenticate/login");
+      // router.push("/authenticate/login");
     }
   }, [dispatch, isAuthenticated, path, router]);
 
@@ -63,6 +61,7 @@ const verifyToken = async (
     router ? router.push(path) : null;
     return currentUser;
   } catch (error) {
+    console.error("Error verifying token:", error);
     router.push("/authenticate/login");
   }
 };
