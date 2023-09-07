@@ -247,16 +247,16 @@ const Profile: React.FC<FriendsProps> = ({ friendsList }) => {
               </div>
             </CardFooter>
           </Card>
-          {isAdmin && (
-            <div className="flex flex-col items-center justify-center p-2 space-y-2">
+          <div className="flex flex-col items-center justify-center p-2 space-y-2">
+            {isAdmin && (
               <Link href="/authenticate/admin-panel">
                 <Button>Admin Panel</Button>
               </Link>
-              <Link href="/authenticate/login">
-                <Button onClick={handleLogOut}>Log Out</Button>
-              </Link>
-            </div>
-          )}
+            )}
+            <Link href="/authenticate/login">
+              <Button onClick={handleLogOut}>Log Out</Button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

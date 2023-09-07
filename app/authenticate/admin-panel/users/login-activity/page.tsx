@@ -35,32 +35,34 @@ const LoginActivity = () => {
     fetchLoginActivity();
   }, []);
   return (
-    <Table>
-      <TableCaption>A list of all users in the network</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-[100px]">User ID</TableHead>
-          <TableHead>Login Time</TableHead>
-          <TableHead>Logout Time</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {Object.entries(loginActivity).map(([id, activity]) => (
-          <TableRow key={id}>
-            <TableCell className="font-medium">{id}</TableCell>
-            <TableCell>
-              {new Date(parseInt(activity.loginTime, 10)).toLocaleString()}
-            </TableCell>
-            <TableCell>
-              {new Date(parseInt(activity.loginTime, 10)).toLocaleString()}
-            </TableCell>
-            <TableCell>
-              <Button>Log User Out</Button>
-            </TableCell>
+    <div className="flex-grow h-[80vh] overflow-y-auto no-scrollbar">
+      <Table>
+        <TableCaption>A list of all users in the network</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">User ID</TableHead>
+            <TableHead>Login Time</TableHead>
+            <TableHead>Logout Time</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {Object.entries(loginActivity).map(([id, activity]) => (
+            <TableRow key={id}>
+              <TableCell className="font-medium">{id}</TableCell>
+              <TableCell>
+                {new Date(parseInt(activity.loginTime, 10)).toLocaleString()}
+              </TableCell>
+              <TableCell>
+                {new Date(parseInt(activity.loginTime, 10)).toLocaleString()}
+              </TableCell>
+              <TableCell>
+                <Button>Log User Out</Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 };
 

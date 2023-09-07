@@ -20,6 +20,10 @@ const Widgets = () => {
     }
   }, [dispatch, currentUserId]);
   const currUserFriends = useSelector(selectFriends);
+  console.log(
+    "🚀 ~ file: Widgets.tsx:23 ~ Widgets ~ currUserFriends:",
+    currUserFriends
+  );
   const renderUserFriends = () => {
     if (!currUserFriends) return;
     return currUserFriends.map((contact) => (
@@ -39,8 +43,8 @@ const Widgets = () => {
           <MagnifyingGlassCircleIcon className="h-6 text-green-500" />
           <MegaphoneIcon className="h-6 text-blue-500" />
         </div>
-        {renderUserFriends()}
       </div>
+      {renderUserFriends()}
     </div>
   );
 };

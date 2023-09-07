@@ -14,8 +14,12 @@ const Sidebar = () => {
       <Link href={"/friends"}>
         <SideBarRow Icon={UsersIcon} title="Friends" />
       </Link>
-      <SideBarRow Icon={UserGroupIcon} title="Groups" />
-      <SideBarRow Icon={ShoppingCartIcon} title="Marketplace" />
+      <Link href={"/additional/fun-facts"}>
+        <SideBarRow Icon={UserGroupIcon} title="Fun Facts" />
+      </Link>
+      <Link href={"/additional/about-me"}>
+        <SideBarRow Icon={ShoppingCartIcon} title="About Me" />
+      </Link>
       <SideBarRow Icon={CalendarIcon} title="Events" />
     </div>
   );

@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import Widgets from "@/components/Widgets";
-import AdminPanel from "./[adminPanel]";
 import { Separator } from "@/components/ui/separator";
 import Header from "@/components/Header";
 import { SidebarNav } from "./[adminNavbar]";
@@ -18,14 +17,6 @@ const sidebarNavItems = [
   {
     title: "Login Activity",
     href: "/authenticate/admin-panel/users/login-activity",
-  },
-  {
-    title: "Notifications",
-    href: "/examples/forms/notifications",
-  },
-  {
-    title: "Display",
-    href: "/examples/forms/display",
   },
 ];
 
