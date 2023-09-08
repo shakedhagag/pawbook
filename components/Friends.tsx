@@ -21,13 +21,18 @@ const Friends: React.FC<FriendsProps> = ({ friendsList }) => {
   const adminState = useSelector(selectAdminState);
   const currentUser = useSelector(selectAuthInfo);
   const id = currentUser.id;
-  if (!adminState.friends) {
-    return (
-      <div className="flex flex-grow h-screen pb-44 pt-6 xl:mr-40 mx-auto max-w-md md:max-w-lg justify-center items-center">
-        Sorry Friends arent available right now...
-      </div>
-    );
-  }
+  useEffect(() => {
+    const enableFriends = () => {
+      if (!adminState.friends) {
+        return (
+          <div className="flex flex-grow h-screen pb-44 pt-6 xl:mr-40 mx-auto max-w-md md:max-w-lg justify-center items-center">
+            Sorry Friends arent available right now...
+          </div>
+        );
+      }
+    };
+    enableFriends();
+  }, [adminState]);
   return (
     <div className="flex-grow h-screen pb-44 pt-6 mr-4 xl:mr-40 overflow-y-auto no-scrollbar">
       <div className="mx-auto max-w-md md:max-w-lg">

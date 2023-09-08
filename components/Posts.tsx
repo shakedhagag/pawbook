@@ -51,13 +51,18 @@ const Posts = () => {
     owner_img: "",
     password: "",
   };
-  if (!adminState.posts) {
-    return (
-      <div className="flex flex-grow h-screen pb-44 pt-6 xl:mr-40 mx-auto max-w-md md:max-w-lg justify-center">
-        Sorry Posts aren't available right now...
-      </div>
-    );
-  }
+  useEffect(() => {
+    const disabledPosts = () => {
+      if (!adminState.posts) {
+        return (
+          <div className="flex flex-grow h-screen pb-44 pt-6 xl:mr-40 mx-auto max-w-md md:max-w-lg justify-center">
+            Sorry Posts aren't available right now...
+          </div>
+        );
+      }
+    };
+    disabledPosts();
+  }, [adminState]);
   return (
     <div>
       {Object.entries(postsState.posts).map(([id, post]) => {

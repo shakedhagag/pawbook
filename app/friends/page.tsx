@@ -28,7 +28,6 @@ export default function Home() {
           <Friends friendsList={currUserFriends} />
           <Widgets />
         </div>
-        {/* WIDGETS */}
       </main>
     </div>
   );

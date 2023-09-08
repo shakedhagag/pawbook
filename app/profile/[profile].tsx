@@ -133,13 +133,18 @@ const Profile: React.FC<FriendsProps> = ({ friendsList }) => {
   const usersDescription =
     currProfile.userProfile?.description || "Tell us about your dog!";
 
-  if (!adminState.editProfile) {
-    return (
-      <div className="flex flex-grow h-screen pb-44 pt-6 xl:mr-40 mx-auto max-w-md md:max-w-lg justify-center items-center">
-        Sorry Profile isn't available right now...
-      </div>
-    );
-  }
+  useEffect(() => {
+    const enableProfile = () => {
+      if (!adminState.editProfile) {
+        return (
+          <div className="flex flex-grow h-screen pb-44 pt-6 xl:mr-40 mx-auto max-w-md md:max-w-lg justify-center items-center">
+            Sorry Profile isn't available right now...
+          </div>
+        );
+      }
+    };
+    enableProfile();
+  }, [adminState]);
 
   return (
     <div className="flex-grow h-screen pb-44 pt-6 mr-4 xl:mr-40 overflow-y-auto no-scrollbar">
