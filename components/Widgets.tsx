@@ -20,10 +20,6 @@ const Widgets = () => {
     }
   }, [dispatch, currentUserId]);
   const currUserFriends = useSelector(selectFriends);
-  console.log(
-    "🚀 ~ file: Widgets.tsx:23 ~ Widgets ~ currUserFriends:",
-    currUserFriends
-  );
   const renderUserFriends = () => {
     if (!currUserFriends) return;
     return currUserFriends.map((contact) => (

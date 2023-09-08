@@ -73,7 +73,6 @@ export const unfollowFriend =
     id: string | undefined
   ): ThunkAction<void, RootState, unknown, Action<string>> =>
   async (dispatch) => {
-    console.log(id);
     if (!id) return;
     const response = await axios.delete<FriendProps>(
       "http://localhost:3030/friends",
